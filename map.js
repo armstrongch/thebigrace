@@ -21,6 +21,9 @@ var map =
 	
 	squares: null,
 	
+	start_line_x: -1,
+	finish_line_x: -1,
+	
 	setup: function()
 	{	
 		this.canvas = $("#gameCanvas")[0];
@@ -73,6 +76,9 @@ var map =
 			sa: 0,
 			ea: 2*Math.PI
 		};
+		
+		this.start_line_x = this.infield_square.x + this.infield_square.w;
+		this.finish_line_x = this.infield_square.x;
 		
 		this.squares = Array.from(Array(100), () => new Array(75));
 		for (let w = 0; w < this.width; w += 1)
@@ -169,24 +175,35 @@ var map =
 		);
 		this.ctx.fill();
 		
-		//draw grid
-		
-		this.ctx.strokeStyle = "black";
+		//start and finish lines
+		this.ctx.strokeStyle = "white";
 		this.ctx.beginPath();
+		this.ctx.moveTo(this.start_line_x, this.infield_square.y + this.infield_square.h);
+		this.ctx.lineTo(this.start_line_x, this.track_square.y + this.track_square.h);
+		
+		this.ctx.moveTo(this.finish_line_x, this.infield_square.y);
+		this.ctx.lineTo(this.finish_line_x, this.track_square.y);
+		
+		this.ctx.stroke();
+		
+
+		//draw runners
+		this.ctx.fillStyle = "black";
 		for (let w = 0; w < this.width; w += 1)
 		{
 			for (let h = 0; h < this.height; h += 1)
 			{
-				if (this.squares[w][h] != "x")
+				if ((this.squares[w][h] != "x") && (this.squares[w][h] != "e"))
 				{
-					this.ctx.rect(
-						w*this.square_width,
-						h*this.square_height,
-						this.square_width,
-						this.square_height);
+					this.ctx.beginPath();
+					this.ctx.arc(
+						(w+0.5)*this.square_width,
+						(h+0.5)*this.square_height,
+						this.square_width*0.45,
+						0, 2*Math.PI);
+					this.ctx.fill();
 				}
 			}
 		}
-		this.ctx.stroke();
 	}
 };
