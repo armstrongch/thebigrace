@@ -19,10 +19,12 @@ var map =
 	track_arc_left: null,
 	track_arc_right: null,
 	
-	squares: null,
-	
 	start_line_x: -1,
 	finish_line_x: -1,
+	
+	lanes: 1,
+	total_lap_distance: -1,
+	segment_ratios: [],
 	
 	setup: function()
 	{	
@@ -80,25 +82,14 @@ var map =
 		this.start_line_x = this.infield_square.x + this.infield_square.w;
 		this.finish_line_x = this.infield_square.x;
 		
-		this.squares = Array.from(Array(100), () => new Array(75));
-		for (let w = 0; w < this.width; w += 1)
-		{
-			for (let h = 0; h < this.height; h += 1)
-			{
-				
-				var sx = w*this.square_width;
-				var sy = h*this.square_height;
-				
-				if (square_is_on_track(this, sx, sy))
-				{
-					this.squares[w][h] = "e";
-				}
-				else
-				{
-					this.squares[w][h] = "x";
-				}
-			}
-		}
+		this.total_lap_distance = this.infield_square.w*2 + this.track_arc_right.r*2*Math.PI;
+		
+		this.segment_ratios = [
+			this.track_arc_right.r*Math.PI / this.total_lap_distance, //first turn
+			this.infield_square.w / this.total_lap_distance, //first straightaway
+			this.track_arc_right.r*Math.PI / this.total_lap_distance, //second turn
+			this.infield_square.w / this.total_lap_distance //second straightaway
+		];
 	},
 	
 	draw: function()
@@ -186,24 +177,31 @@ var map =
 		
 		this.ctx.stroke();
 		
-
 		//draw runners
-		this.ctx.fillStyle = "black";
-		for (let w = 0; w < this.width; w += 1)
+		
+		for (let i = 0; i < race.runners.length; i += 1)
 		{
-			for (let h = 0; h < this.height; h += 1)
+			var runner_to_draw = race.runners[i];
+			var temp_lap_progress = runner_to_draw.lap_progress;
+			var segment_index = 0;
+			while (temp_lap_progress > this.segment_ratios[segment_index])
 			{
-				if ((this.squares[w][h] != "x") && (this.squares[w][h] != "e"))
-				{
-					this.ctx.beginPath();
-					this.ctx.arc(
-						(w+0.5)*this.square_width,
-						(h+0.5)*this.square_height,
-						this.square_width*0.45,
-						0, 2*Math.PI);
-					this.ctx.fill();
-				}
+				temp_lap_progress -= this.segment_ratios[segment_index];
+				segment_index += 1;
+			}
+			var segment_progress = temp_lap_progress / this.segment_ratios[segment_index];
+			switch(segment_index)
+			{
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
 			}
 		}
+		
 	}
 };
