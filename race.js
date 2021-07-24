@@ -14,8 +14,10 @@ var race =
 		
 		for (let i = 0; i < this.runner_count; i += 1)
 		{
-			this.runners[i] = newRunner(i, 0.2 + 0.02*i);
+			this.runners[i] = newRunner(i, 200 + i);
 			map.squares[start_square_x][start_square_y] = i;
+			this.runners[i].x_square = start_square_x;
+			this.runners[i].y_square = start_square_y;
 			start_square_y += 1;
 			if (start_square_y > max_start_square_y)
 			{
@@ -32,7 +34,6 @@ var race =
 		for (i = 0; i < this.runners.length; i += 1)
 		{
 			this.runners[i].move();
-			//why is this broken??
 		}
 	},
 	

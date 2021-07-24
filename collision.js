@@ -68,3 +68,14 @@ function square_is_on_track(map, sx, sy)
 			map.square_width, map.square_height))
 	);
 }
+
+//from: https://gist.github.com/conorbuck/2606166
+function point_direction(x1, y1, x2, y2)
+{
+	return Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+}
+
+function point_distance(x1, y1, x2, y2)
+{
+	return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+}
