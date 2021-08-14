@@ -1,3 +1,16 @@
-#gameCanvas {
-	border-style: solid;
+body {
+	font-size: large;
+}
+
+td {
+	border: 1px solid black;
+	min-width: 4%;
+}
+
+.off_course {
+	background: black;
+}
+
+#course_table {
+	width: 100%;
 }
