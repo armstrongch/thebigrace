@@ -1,31 +1,44 @@
 var runner_factory = 
 {
-	new_runner: function()
+	die_faces: [1, 2, 3, 4, 5, 6, 7, 8],
+	
+	new_runner: function(runner_num)
 	{
 		var runner = 
 		{
-			cards: [],
-			bonus_energy: 10,
-			//we should never create a new runner without immediately adding them to the race, so that each runner will have a unique priority value
-			priority: race.runners.length
+			name: this.generate_name(runner_num),
+			attributes: [],
+			position: -1,
+			team: "none",
+			die: this.generate_die(),
+			bonus_energy: Math.floor(Math.random()*10), //4 bonus_energy = 1 extra move
+			ranking: -1,
+			
+			roll: function()
+			{
+				var roll = this.die[Math.floor(Math.random()*this.die.length)];
+				return roll;
+			},
+			
+			//apply tactics/attributes to 1 or more rolls:
+			get_move_distance: function()
+			{
+				return this.roll();
+			}
 		};
-		runner.cards = this.generate_cards();
-		runner.name = this.generate_name(runner.priority);
-		runner.team = race.teams[runner.priority % race.teams.length];
-		runner.bonus_energy += Math.floor(runner.priority / race.teams.length);
+		
 		return runner;
 	},
 	
-	//generate an array of 4 numbers totalling 20
-	generate_cards: function()
+	generate_die: function()
 	{
-		var cards = [0, 0, 0, 0];
-		for (let i = 0; i < 20; i += 1)
+		var die = [];
+		while(die.length < 6)
 		{
-			var random_index = Math.floor(Math.random()*4);
-			cards[random_index] += 1;
+			var rand_int = this.die_faces[Math.floor(Math.random()*this.die_faces.length)];
+			die.push(rand_int);
 		}
-		return cards;
+		return die;
 	},
 	
 	generate_name: function(name_index)
@@ -36,6 +49,6 @@ var runner_factory =
 		var first_initial = (first_initial_index+10).toString(36);
 		var last_initial = (last_initial_index+10).toString(36);
 		
-		return first_initial + last_initial;
+		return first_initial.toUpperCase() + last_initial.toUpperCase();
 	}
 }
