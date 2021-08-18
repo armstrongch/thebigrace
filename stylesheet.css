@@ -1,16 +1,21 @@
 body {
 	font-size: large;
 }
-
-td {
+div {
 	border: 1px solid black;
-	min-width: 4%;
+	padding: 5px;
+	display: inline-block;
+}
+td {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#draft_div {
+	height: 50vh;
+	overflow-y: scroll;
 }
 
-.off_course {
-	background: black;
-}
-
-#course_table {
-	width: 100%;
+.draft_me {
+	text-decoration: underline;
+	cursor: pointer;
 }

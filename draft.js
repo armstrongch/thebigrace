@@ -4,6 +4,9 @@ var draft =
 	teams: [],
 	team_colors: ["red", "orange", "yellow", "green", "blue", "purple", "black"],
 	
+	team_turn_index: 0,
+	team_turn_index_direction: 1,
+	
 	setup: function()
 	{
 		for (let i = 0; i < this.team_colors.length; i += 1)
@@ -15,36 +18,29 @@ var draft =
 		{
 			this.runners.push(runner_factory.new_runner(i));
 		}
-		
+		this.rank_runners();
 	},
 	
-	snake_draft: function()
+	snake_draft_round: function()
 	{
-		this.rank_runners();
+		//this.rank_runners(); moved this to setup, but we should ALWAYS call setup before any other draft function
+		var runner_index = this.teams[team_turn_index].get_draft_pick();
 		
-		var team_turn_index = 0;
-		var team_turn_index_direction = 1;
+		this.teams[team_turn_index].runners.push(this.runners[runner_index]);
+		this.teams[team_turn_index].runners[this.teams[team_turn_index].runners.length - 1].team = team_turn_index;
+		this.runners.splice(runner_index, 1);
+		team_turn_index += team_turn_index_direction;
 		
-		while(this.runners.length > 0)
+		if (team_turn_index < 0)
 		{
-			var runner_index = this.teams[team_turn_index].get_draft_pick();
-			this.teams[team_turn_index].runners.push(this.runners[runner_index]);
-			this.teams[team_turn_index].runners[this.teams[team_turn_index].runners.length - 1].team = team_turn_index;
-			this.runners.splice(runner_index, 1);
-			team_turn_index += team_turn_index_direction;
-			if (team_turn_index < 0)
-			{
-				team_turn_index_direction = 1;
-				team_turn_index = 0;
-			}
-			else if (team_turn_index > this.teams.length - 1)
-			{
-				team_turn_index_direction = -1;
-				team_turn_index = this.teams.length - 1;
-			}
+			team_turn_index_direction = 1;
+			team_turn_index = 0;
 		}
-		
-		this.rank_teams();
+		else if (team_turn_index > this.teams.length - 1)
+		{
+			team_turn_index_direction = -1;
+			team_turn_index = this.teams.length - 1;
+		}
 	},
 	
 	//sort the runners by calculated rank, based on die and starting bonus_energy

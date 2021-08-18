@@ -11,7 +11,7 @@ var runner_factory =
 			position: -1,
 			team: "none",
 			die: this.generate_die(),
-			bonus_energy: Math.floor(Math.random()*10), //4 bonus_energy = 1 extra move
+			bonus_energy: Math.floor(Math.random()*10),
 			ranking: -1,
 			
 			roll: function()
@@ -38,6 +38,7 @@ var runner_factory =
 			var rand_int = this.die_faces[Math.floor(Math.random()*this.die_faces.length)];
 			die.push(rand_int);
 		}
+		die.sort((a, b) => (a > b) ? 1 : -1);
 		return die;
 	},
 	

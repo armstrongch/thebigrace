@@ -55,6 +55,7 @@ var race =
 					members: [i]
 				});
 			}
+			runner_position = this.runners[i].position;
 		}
 	}
 }

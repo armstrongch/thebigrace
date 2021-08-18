@@ -7,6 +7,7 @@ var team_factory =
 			color: draft.team_colors[draft.teams.length],
 			runners: [],
 			rank: -1,
+			human_player: false,
 			get_draft_pick: function()
 			{
 				return 0;
