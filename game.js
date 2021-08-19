@@ -21,5 +21,16 @@ var game =
 		
 		$('#draft_div').html(ui.get_draft_table_html());
 		$('#draft_div').css('display', 'inline-block');
+		$('#input_div').css('display', 'inline-block');
+		$('#help_div').html(ui.get_draft_help_html());
+		$('#help_div').css('display', 'inline-block');
+		draft.snake_draft_round();
+	},
+	
+	draft_continue_button_click: function()
+	{
+		$('#draft_div').css('display', 'none');
+		$('#race_div').css('display', 'inline-block');
+		race.setup();
 	}
 }

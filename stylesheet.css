@@ -1,4 +1,4 @@
-body {
+body, button {
 	font-size: large;
 }
 div {
@@ -10,9 +10,11 @@ td {
 	padding-left: 10px;
 	padding-right: 10px;
 }
-#draft_div {
-	height: 50vh;
+
+#draft_div, #race_div {
+	max-height: 75vh;
 	overflow-y: scroll;
+	max-width: 75vw;
 }
 
 .draft_me {

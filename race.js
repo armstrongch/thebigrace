@@ -11,6 +11,8 @@ var race =
 				this.runners.push(draft.teams[i].runners.pop());
 			}
 		}
+		this.start_race();
+		draw.draw_race();
 	},
 	
 	//the first round doesn't allow for strategy - it's just a straight random roll

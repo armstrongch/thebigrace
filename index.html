@@ -7,8 +7,26 @@
 	</head>
 	<body onload = 'game.setup()'>
 		
-		<div id='title_div'></div>
-		<div id='draft_div' style='display: none'></div>
+		<table>
+			<tr>
+				<td>
+					<div id='title_div'></div>
+					<div id='draft_div' style='display: none'></div>
+					<div id='race_div' style='display: none'>
+						<canvas id='race_canvas'></canvas>
+					</div>
+				</td>
+				
+				<td>
+					<div id='help_div' style='display: none'></div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+					<div id='input_div' style='display: none'></div>
+				</td>
+			</tr>
+		</table>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="game.js"></script>
@@ -17,5 +35,6 @@
 		<script src="draft.js"></script>
 		<script src="team.js"></script>
 		<script src="ui.js"></script>
+		<script src="draw.js"></script>
 	</body>
 </html>
