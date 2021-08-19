@@ -1,10 +1,11 @@
 var team_factory = 
 {
+	team_colors: ["red", "orange", "green", "blue", "purple", "black", "brown"],
 	new_team: function()
 	{
 		var team = 
 		{
-			color: draft.team_colors[draft.teams.length],
+			color: this.team_colors[draft.teams.length],
 			runners: [],
 			rank: -1,
 			human_player: false,

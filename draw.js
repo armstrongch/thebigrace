@@ -5,7 +5,7 @@ var draw =
 	runner_radius: 10,
 	runner_radius_with_padding: 12,
 	space_width: 50,
-	
+	selected_runner_index: 0,
 	
 	draw_race: function()
 	{
@@ -13,9 +13,8 @@ var draw =
 		var canvas = this.canvas;
 		
 		var num_spaces = race.runners[0].position - race.runners[race.runners.length-1].position + 1;
-		canvas.width = Math.max(10000, num_spaces*this.space_width);
+		canvas.width = Math.max(3000, num_spaces*this.space_width);
 		canvas.height = 600;
-		$('#race_div')[0].scrollTo(canvas.width, 0);
 		
 		ctx.fillStyle = "green";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -79,14 +78,54 @@ var draw =
 				last_runner_index_drawn += 1;
 			}
 		}
+		$('#help_div').html(ui.get_race_help_html);
+	},
+	
+	click_canvas: function(event)
+	{
+		var mouse_x = event.offsetX;
+		var mouse_y = event.offsetY;
+		for (let i = 0; i < race.runners.length; i += 1)
+		{
+			var runner_x = race.runners[i].x_pos;
+			var runner_y = race.runners[i].y_pos;
+			
+			if (Math.sqrt(Math.pow((mouse_x-runner_x), 2) + Math.pow((mouse_y-runner_y), 2)) < this.runner_radius)
+			{
+				this.select_runner(i);
+				i = race.runners.length + 1;
+			}
+		}
+	},
+	
+	select_runner: function(runner_index)
+	{
+		this.selected_runner_index = runner_index;
+		this.draw_race();
+		$('#race_div')[0].scrollTo(race.runners[runner_index].x_pos, 0);
 	},
 	
 	draw_runner: function(runner_index, x_pos, y_pos)
 	{
+		race.runners[runner_index].x_pos = x_pos;
+		race.runners[runner_index].y_pos = y_pos;
+		
 		var ctx = this.ctx;
-		ctx.fillStyle = "white";
+		if (this.selected_runner_index == runner_index)
+		{
+			ctx.fillStyle = "black";
+		}
+		else
+		{
+			ctx.fillStyle = "white";
+		}
 		ctx.beginPath();
 		ctx.arc(x_pos, y_pos, this.runner_radius, 0, 2*Math.PI);
+		ctx.fill();
+		
+		ctx.fillStyle = team_factory.team_colors[race.runners[runner_index].team];
+		ctx.beginPath();
+		ctx.arc(x_pos, y_pos, this.runner_radius-2, 0, 2*Math.PI);
 		ctx.fill();
 	}
 }

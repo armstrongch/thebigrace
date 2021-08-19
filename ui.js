@@ -100,5 +100,29 @@ var ui =
 			</p>`;
 		}
 		return draft_help_html;
+	},
+	
+	get_race_help_html: function()
+	{
+		var die_sides = "";
+		var die_sum = 0;
+		for (let j = 0; j < race.runners[draw.selected_runner_index].die.length; j += 1)
+		{
+			die_sides += race.runners[draw.selected_runner_index].die[j];
+			die_sum += race.runners[draw.selected_runner_index].die[j];
+			if (j < race.runners[draw.selected_runner_index].die.length - 1)
+			{
+				die_sides += ", ";
+			}
+		}
+		return `
+		<p><span style='font-weight: bold'>Turns remaining:</span> ${race.turns_remaining}</p>
+		<p>Click on a runner to view additional info:</p>
+		<p><span style='font-weight: bold'>Runner Info:</span> ${race.runners[draw.selected_runner_index].name}</p>
+		<p>Die sides: ${die_sides}</p>
+		<p>Energy: ${race.runners[draw.selected_runner_index].bonus_energy}</p>
+		<p>Current Position: ${draw.selected_runner_index+1}</p>
+		<p>Projected Finish Position: ${race.runners[draw.selected_runner_index].projected_finish_position}</p>`;
+		
 	}
 }

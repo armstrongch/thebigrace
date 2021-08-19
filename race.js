@@ -2,6 +2,7 @@ var race =
 {
 	runners: [],
 	packs: [],
+	turns_remaining: 50,
 	setup: function()
 	{
 		for (let i = 0; i < draft.teams.length; i += 1)
@@ -12,7 +13,6 @@ var race =
 			}
 		}
 		this.start_race();
-		draw.draw_race();
 	},
 	
 	//the first round doesn't allow for strategy - it's just a straight random roll
@@ -59,5 +59,8 @@ var race =
 			}
 			runner_position = this.runners[i].position;
 		}
+		this.turns_remaining -= 1;
+		ui.set_input_div_html("<p><button>Continue</button><p/>");
+		draw.select_runner(0); //this calls draw.draw_race()
 	}
 }

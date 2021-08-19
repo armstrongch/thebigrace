@@ -2,14 +2,13 @@ var draft =
 {
 	runners: [],
 	teams: [],
-	team_colors: ["red", "orange", "green", "blue", "purple", "black", "brown"],
 	
 	team_turn_index: 0,
 	team_turn_index_direction: 1,
 	
 	setup: function()
 	{
-		for (let i = 0; i < this.team_colors.length; i += 1)
+		for (let i = 0; i < team_factory.team_colors.length; i += 1)
 		{
 			this.teams.push(team_factory.new_team());
 		}
@@ -108,6 +107,11 @@ var draft =
 		}
 		
 		this.runners.sort((a, b) => (a.rank > b.rank) ? -1 : 1);
+		
+		for (let i = 0; i < this.runners.length; i += 1)
+		{
+			this.runners[i].projected_finish_position = i+1;
+		}
 	},
 	
 	rank_teams: function()
