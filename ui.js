@@ -117,8 +117,9 @@ var ui =
 		}
 		return `
 		<p><span style='font-weight: bold'>Turns remaining:</span> ${race.turns_remaining}</p>
-		<p>Click on a runner to view additional info:</p>
+		<p>Runners who end their turn in a space immediately behind another runner will gain 1 energy due to drafting.</p>
 		<p>* indicates runners who have not moved yet this turn.</p>
+		<p>Click on a runner to view additional info:</p>
 		<p><span style='font-weight: bold'>Runner Info:</span> ${race.runners[draw.selected_runner_index].name}</p>
 		<p>Die sides: ${die_sides}</p>
 		<p>Energy: ${race.runners[draw.selected_runner_index].total_energy}</p>

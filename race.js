@@ -86,31 +86,21 @@ var race =
 		
 		//award bonus energy for drafting, and establish packs 
 		this.sort_runners_by_position();
-		var runner_position = this.runners[0].position;
-		this.packs = [];
-		this.packs.push(
-		{
-			leader: 0,
-			members: [0]
-		});
 		
+		//i = 1 because this.runners[0] will always be a pack leader
 		for (let i = 1; i < this.runners.length; i += 1)
 		{
-			if (runner_position - this.runners[i].position <= 1)
+			var runner_position = this.runners[i].position;
+			for (let j = i-1; j >= 0; j -= 1)
 			{
-				this.runners[i].total_energy += 1;
-				this.packs[this.packs.length-1].members.push(i);
-			}
-			else
-			{
-				this.packs.push(
+				if (this.runners[j].position == runner_position + 1)
 				{
-					leader: i,
-					members: [i]
-				});
+					this.runners[i].total_energy += 1;
+					j = -1;
+				}
 			}
-			runner_position = this.runners[i].position;
 		}
+
 		this.turns_remaining -= 1;
 		ui.set_input_div_html(`<p>The race is underway! Only ${race.turns_remaining} turns to go!</p><p><button onclick='race.start_race_round()'>Continue</button><p/>`);
 		draw.select_runner(0); //this calls draw.draw_race()
