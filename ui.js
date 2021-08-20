@@ -124,5 +124,16 @@ var ui =
 		<p>Current Position: ${draw.selected_runner_index+1}</p>
 		<p>Projected Finish Position: ${race.runners[draw.selected_runner_index].projected_finish_position}</p>`;
 		
+	},
+	
+	get_race_runner_input: function(runner_index)
+	{
+		var runner_input_html = `<p>${race.runners[runner_index].name} rolls: ${race.runners[runner_index].current_roll}</p>`;
+		for (let i = 0; i < energy_use.energy_actions.length; i += 1)
+		{
+			runner_input_html += `<p><button>${energy_use.energy_actions[i].desc} (Cost: ${energy_use.energy_actions[i].cost})</button></p>`;
+		}
+		runner_input_html += `<p><button>Move ${race.runners[runner_index].current_roll} Spaces (End Turn for ${race.runners[runner_index].name})</button></p>`;
+		return runner_input_html;
 	}
 }

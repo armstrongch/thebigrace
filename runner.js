@@ -13,14 +13,14 @@ var runner_factory =
 			die: this.generate_die(),
 			bonus_energy: Math.floor(Math.random()*10),
 			ranking: -1,
-			
+			target_position: -1,
 			roll: function()
 			{
 				var roll = this.die[Math.floor(Math.random()*this.die.length)];
 				return roll;
 			},
 			
-			//apply tactics/attributes to 1 or more rolls:
+			//apply tactics/attributes to 1 or more rolls; this is only for CPU-controlled teams
 			get_move_distance: function()
 			{
 				return this.roll();
