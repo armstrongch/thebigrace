@@ -31,7 +31,7 @@ var ui =
 					<td>${draft.runners[i].name}</td>
 					<td>${die_sides}</td>
 					<td>${die_sum}</td>
-					<td>${draft.runners[i].bonus_energy}</td>
+					<td>${draft.runners[i].total_energy}</td>
 					<td></td>
 					<td>${draft.runners[i].rank}</td>
 					<td><span class='draft_me' onclick='draft.draft_select_runner_by_name("${draft.runners[i].name}")'>Undrafted</span></td>
@@ -118,9 +118,10 @@ var ui =
 		return `
 		<p><span style='font-weight: bold'>Turns remaining:</span> ${race.turns_remaining}</p>
 		<p>Click on a runner to view additional info:</p>
+		<p>* indicates runners who have not moved yet this turn.</p>
 		<p><span style='font-weight: bold'>Runner Info:</span> ${race.runners[draw.selected_runner_index].name}</p>
 		<p>Die sides: ${die_sides}</p>
-		<p>Energy: ${race.runners[draw.selected_runner_index].bonus_energy}</p>
+		<p>Energy: ${race.runners[draw.selected_runner_index].total_energy}</p>
 		<p>Current Position: ${draw.selected_runner_index+1}</p>
 		<p>Projected Finish Position: ${race.runners[draw.selected_runner_index].projected_finish_position}</p>`;
 		
@@ -128,12 +129,24 @@ var ui =
 	
 	get_race_runner_input: function(runner_index)
 	{
-		var runner_input_html = `<p>${race.runners[runner_index].name} rolls: ${race.runners[runner_index].current_roll}</p>`;
+		var runner_input_html = `<p>${race.runners[runner_index].name} rolls: ${race.runners[runner_index].current_roll}</p><p>Available Energy: ${race.runners[runner_index].total_energy}</p>`;
+		var disabled_string = "";
+		var onclick_string = "";
 		for (let i = 0; i < energy_use.energy_actions.length; i += 1)
 		{
-			runner_input_html += `<p><button>${energy_use.energy_actions[i].desc} (Cost: ${energy_use.energy_actions[i].cost})</button></p>`;
+			if (race.runners[runner_index].total_energy >= energy_use.energy_actions[i].cost)
+			{
+				disabled_string = "";
+				onclick_string = `onclick="energy_use.energy_use_function('${energy_use.energy_actions[i].name}', ${runner_index})"`;
+			}
+			else
+			{
+				disabled_string = "disabled";
+				onclick_string = "";
+			}
+			runner_input_html += `<p><button ${disabled_string}${onclick_string}>${energy_use.energy_actions[i].desc} (Cost: ${energy_use.energy_actions[i].cost})</button></p>`;
 		}
-		runner_input_html += `<p><button>Move ${race.runners[runner_index].current_roll} Spaces (End Turn for ${race.runners[runner_index].name})</button></p>`;
+		runner_input_html += `<p><button onclick='race.move_runner(${runner_index})'>Move ${race.runners[runner_index].current_roll} Spaces (End Turn for ${race.runners[runner_index].name})</button></p>`;
 		return runner_input_html;
 	}
 }

@@ -92,7 +92,7 @@ var draft =
 		}
 	},
 	
-	//sort the runners by calculated rank, based on die and starting bonus_energy
+	//sort the runners by calculated rank, based on die and starting total_energy
 	rank_runners: function()
 	{
 		for (let i = 0; i < this.runners.length; i += 1)
@@ -103,7 +103,7 @@ var draft =
 			{
 				this.runners[i].rank += this.runners[i].die[j]*10;
 			}
-			this.runners[i].rank += this.runners[i].bonus_energy;
+			this.runners[i].rank += this.runners[i].total_energy;
 		}
 		
 		this.runners.sort((a, b) => (a.rank > b.rank) ? -1 : 1);

@@ -3,7 +3,6 @@ var race =
 	runners: [],
 	packs: [],
 	turns_remaining: 50,
-	current_round_runner_index: 0,
 	setup: function()
 	{
 		for (let i = 0; i < draft.teams.length; i += 1)
@@ -21,32 +20,55 @@ var race =
 	{
 		for (let i = 0; i < this.runners.length; i += 1)
 		{
-			this.runners[i].target_position += this.runners[i].roll();
+			this.runners[i].position += this.runners[i].roll();
+			this.runners[i].moved_this_round = true;
 		}
 		race.end_round();
 	},
 	
 	start_race_round: function()
 	{
-		this.current_round_runner_index = 0;
-		this.move_runner(this.current_round_runner_index);
+		this.move_next_runner();
+	},
+	
+	move_next_runner: function()
+	{
+		this.sort_runners_by_position();
+		var runner_index = -1
+		for (let i = 0; i < this.runners.length; i += 1)
+		{
+			if (!this.runners[i].moved_this_round)
+			{
+				runner_index = i;
+				i = this.runners.length;
+			}
+		}
+		
+		if (runner_index != -1)
+		{
+			if (draft.teams[this.runners[runner_index].team].human_player)
+			{
+				this.runners[runner_index].current_roll = this.runners[runner_index].roll();
+				ui.set_input_div_html(ui.get_race_runner_input(runner_index));
+				draw.select_runner(runner_index);
+			}
+			else
+			{
+				this.runners[runner_index].current_roll = this.runners[runner_index].get_move_distance();
+				this.move_runner(runner_index);
+			}
+		}
+		else
+		{
+			this.end_round();
+		}
 	},
 	
 	move_runner: function(runner_index)
 	{
-		if (draft.teams[this.runners[runner_index].team].human_player)
-		{
-			this.runners[runner_index].current_roll = this.runners[runner_index].roll();
-			ui.set_input_div_html(ui.get_race_runner_input(runner_index));
-			draw.select_runner(runner_index);
-			alert("to-do: re-write the draw_race function. it assumes that all runners are in order of target_position, but some have moved, causing chaos");
-		}
-		else
-		{
-			this.runners[runner_index].target_position = this.runners[runner_index].position + this.runners[runner_index].get_move_distance();
-			this.current_round_runner_index += 1;
-			this.move_runner(this.current_round_runner_index);
-		}
+		this.runners[runner_index].position = this.runners[runner_index].position + this.runners[runner_index].current_roll;
+		this.runners[runner_index].moved_this_round = true;
+		this.move_next_runner();
 	},
 	
 	sort_runners_by_position: function()
@@ -58,7 +80,8 @@ var race =
 	{
 		for (let i = 0; i < this.runners.length; i += 1)
 		{
-			this.runners[i].position = this.runners[i].target_position;
+			this.runners[i].moved_this_round = false;
+			this.runners[i].current_roll = 0;
 		}
 		
 		//award bonus energy for drafting, and establish packs 
@@ -75,7 +98,7 @@ var race =
 		{
 			if (runner_position - this.runners[i].position <= 1)
 			{
-				this.runners[i].bonus_energy += 1;
+				this.runners[i].total_energy += 1;
 				this.packs[this.packs.length-1].members.push(i);
 			}
 			else

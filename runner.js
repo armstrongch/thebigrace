@@ -11,9 +11,9 @@ var runner_factory =
 			position: -1,
 			team: "none",
 			die: this.generate_die(),
-			bonus_energy: Math.floor(Math.random()*10),
+			total_energy: Math.floor(Math.random()*10),
 			ranking: -1,
-			target_position: -1,
+			moved_this_round: false,
 			roll: function()
 			{
 				var roll = this.die[Math.floor(Math.random()*this.die.length)];

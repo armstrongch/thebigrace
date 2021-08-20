@@ -114,6 +114,10 @@ var draw =
 		if (this.selected_runner_index == runner_index)
 		{
 			ctx.fillStyle = "black";
+			ctx.strokeStyle = "3px solid white";
+			ctx.beginPath();
+			ctx.arc(x_pos, y_pos, this.runner_radius*2, 0, 2*Math.PI);
+			ctx.stroke();
 		}
 		else
 		{
@@ -127,5 +131,14 @@ var draw =
 		ctx.beginPath();
 		ctx.arc(x_pos, y_pos, this.runner_radius-2, 0, 2*Math.PI);
 		ctx.fill();
+		
+		if (!race.runners[runner_index].moved_this_round)
+		{
+			ctx.font = `${this.runner_radius*2}px Arial`;
+			ctx.fillStyle = "white";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillText("*", x_pos, y_pos+this.runner_radius/3);
+		}
 	}
 }
